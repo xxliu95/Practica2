@@ -14,7 +14,7 @@ func init() {
 }
 
 func GoAddLists(a []int, b []int) chan int {
-	c := make(chan int, 4)
+	c := make(chan int, 3)
 	for i := range a {
 		result := a[i] + b[i]
 		c <- result
@@ -60,8 +60,10 @@ func main() {
 	list1 := []int{1, 2, 3}
 	list2 := []int{4, 2, 6}
 	ch := GoAddLists(list1, list2)
-	result1, result2, result3 := <-ch, <-ch, <-ch
-	fmt.Printf("%d %d %d\n", result1, result2, result3)
 	close(ch)
 
+	for val := range ch {
+		fmt.Printf("%d ", val)
+	}
+	fmt.Println()
 }
