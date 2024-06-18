@@ -2,6 +2,41 @@ package Generic
 
 import "testing"
 
+func TestAnyOfInteger(t *testing.T) {
+	type args struct {
+		slice []int
+		f     func(int) bool
+	}
+	tests := []struct {
+		name string
+		args args
+		want bool
+	}{
+		{
+			name: "Empty Slice",
+			args: args{slice: []int{}, f: func(n int) bool { return true }},
+			want: false,
+		},
+		{
+			name: "Non-empty Slice, Condition True",
+			args: args{slice: []int{1, 2, 3, 4, 5}, f: func(n int) bool { return n > 3 }},
+			want: true,
+		},
+		{
+			name: "Non-empty Slice, Condition False",
+			args: args{slice: []int{1, 2, 3, 4, 5}, f: func(n int) bool { return n > 5 }},
+			want: false,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := AnyOf(tt.args.slice, tt.args.f); got != tt.want {
+				t.Errorf("AnyOf() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
 func TestAnyOfEmpty(t *testing.T) {
 	slice := []int{}
 	condition := func(n int) bool { return n > 3 }

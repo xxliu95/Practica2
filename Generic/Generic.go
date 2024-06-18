@@ -22,7 +22,3 @@ func Equal[T comparable](slice1 []T, slice2 []T) bool {
 
 	return true
 }
-
-// func RemoveIf ([]T, func (T) bool) int {
-// 	return
-// }
